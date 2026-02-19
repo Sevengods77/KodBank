@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kodbank - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .dashboard-card {
+            text-align: center;
+        }
+
+        #logout-btn {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            margin-top: 2rem;
+        }
+
+        #logout-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container dashboard-card">
+        <h1>User Dashboard</h1>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">Welcome back to Kodbank!</p>
+
+        <button id="check-balance-btn">Check Balance</button>
+        <div id="balance-display"></div>
+
+        <button id="logout-btn">Logout</button>
+    </div>
+
+    <script>
+        document.getElementById('check-balance-btn').addEventListener('click', async () => {
+            const response = await fetch('/api/balance');
+            if (response.ok) {
+                const data = await response.json();
+                const display = document.getElementById('balance-display');
+                display.innerHTML = `Your balance is: ₹${data.balance}`;
+                display.style.display = 'block';
+                createConfetti();
+            } else {
+                alert('Session expired. Please login again.');
+                window.location.href = '/login';
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            document.cookie = "auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            window.location.href = '/login';
+        });
+
+        function createConfetti() {
+            const colors = ['#6366f1', '#a855f7', '#ec4899', '#3b82f6', '#10b981'];
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = confetti.style.width;
+                confetti.style.borderRadius = '50%';
+                confetti.style.animation = `confetti ${Math.random() * 3 + 2}s linear forwards`;
+                document.body.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+    </script>
+</body>
+
+</html>
