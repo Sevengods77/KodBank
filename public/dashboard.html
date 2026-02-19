@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kodbank - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="top-logo">KodBank</div>
+    <canvas id="confetti-canvas"></canvas>
+
+    <div class="glass-card" style="text-align: center;">
+        <div class="brand">Dashboard</div>
+        <p class="subtitle">Welcome to your secure financial HQ. Everything in one place.</p>
+
+        <button id="check-balance-btn" class="btn-primary">View Account Balance</button>
+        <div id="balance-display" class="balance-box"></div>
+
+        <button id="logout-btn" class="btn-secondary">Terminate Session</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        document.getElementById('check-balance-btn').addEventListener('click', async () => {
+            const btn = document.getElementById('check-balance-btn');
+            btn.disabled = true;
+            btn.textContent = 'Decrypting Data...';
+
+            try {
+                const response = await fetch('/api/balance');
+                if (response.ok) {
+                    const data = await response.json();
+                    const display = document.getElementById('balance-display');
+                    display.innerHTML = `₹${data.balance}`;
+                    display.style.display = 'block';
+                    btn.style.display = 'none';
+
+                    confetti({
+                        particleCount: 150,
+                        spread: 70,
+                        origin: { y: 0.6 },
+                        colors: ['#3b82f6', '#10b981', '#ffffff']
+                    });
+                } else {
+                    window.location.href = '/login';
+                }
+            } catch (err) {
+                console.error(err);
+                btn.disabled = false;
+                btn.textContent = 'View Account Balance';
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            document.cookie = "auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            window.location.href = '/login';
+        });
+    </script>
+</body>
+
+</html>

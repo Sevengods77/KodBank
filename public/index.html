@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kodbank - Join Us</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="top-logo">KodBank</div>
+
+    <div class="glass-card">
+        <div class="brand">KodBank</div>
+        <div class="subtitle">Join the modern banking revolution. Manage your wealth effortlessly.</div>
+
+        <form id="register-form">
+            <div style="display: flex; gap: 1rem; margin-bottom: 1.25rem;">
+                <div class="form-group" style="flex: 0.4;">
+                    <label>UID</label>
+                    <input type="number" id="uid" placeholder="ID">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>Full Name</label>
+                    <input type="text" id="uname" required placeholder="Name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="email" required placeholder="email@example.com">
+            </div>
+            <div class="form-group" style="display: flex; gap: 1rem;">
+                <div style="flex: 1;">
+                    <label>Password</label>
+                    <input type="password" id="password" required placeholder="••••">
+                </div>
+                <div style="flex: 1;">
+                    <label>Phone</label>
+                    <input type="text" id="phone" required placeholder="+91...">
+                </div>
+            </div>
+            <button type="submit" class="btn-primary">Create Account</button>
+            <div class="auth-footer">
+                Already member? <a href="/login">Log in</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                uid: document.getElementById('uid').value || null,
+                uname: document.getElementById('uname').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                phone: document.getElementById('phone').value,
+                role: 'Customer'
+            };
+
+            const response = await fetch('/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                window.location.href = '/login';
+            } else {
+                const err = await response.json();
+                alert(err.error || 'Registration failed');
+            }
+        });
+    </script>
+</body>
+
+</html>
