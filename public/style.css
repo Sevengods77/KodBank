@@ -147,18 +147,24 @@ body {
     font-weight: 600;
 }
 
-/* Dashboard Specific */
-.balance-box {
-    background: rgba(16, 185, 129, 0.1);
-    border: 1px solid rgba(16, 185, 129, 0.2);
-    padding: 1.25rem;
-    border-radius: 1rem;
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: #10b981;
+.btn-secondary {
+    width: 100%;
+    background: rgba(239, 68, 68, 0.05);
+    color: #f87171;
+    padding: 0.65rem;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
     margin-top: 1rem;
-    display: none;
-    text-align: center;
+}
+
+.btn-secondary:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: #ef4444;
 }
 
 canvas#confetti-canvas {
