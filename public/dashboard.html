@@ -12,18 +12,16 @@
 <body>
     <canvas id="confetti-canvas"></canvas>
 
-    <div class="dashboard-container">
-        <div class="dashboard-card shadow-2xl">
-            <div class="brand">Kodbank Dashboard</div>
-            <p class="subtitle">Access your account details and secure balance.</p>
+    <div class="glass-card" style="text-align: center;">
+        <div class="brand">Dashboard</div>
+        <p class="subtitle" id="welcome-msg">Welcome back!</p>
 
-            <button id="check-balance-btn" class="btn-primary btn-check">Check Current Balance</button>
-            <div id="balance-display" class="balance-box"></div>
+        <button id="check-balance-btn" class="btn-primary">Check Balance</button>
+        <div id="balance-display" class="balance-box"></div>
 
-            <button id="logout-btn"
-                style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); margin-top: 1rem;">Sign
-                Out Securely</button>
-        </div>
+        <button id="logout-btn"
+            style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); margin-top: 1rem; width: 100%; padding: 0.6rem; border-radius: 0.5rem; font-size: 0.875rem; cursor: pointer;">Sign
+            Out</button>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -31,49 +29,31 @@
         document.getElementById('check-balance-btn').addEventListener('click', async () => {
             const btn = document.getElementById('check-balance-btn');
             btn.disabled = true;
-            btn.textContent = 'Verifying Account...';
+            btn.textContent = 'Verifying...';
 
             try {
                 const response = await fetch('/api/balance');
                 if (response.ok) {
                     const data = await response.json();
                     const display = document.getElementById('balance-display');
-                    display.innerHTML = `Your Balance: ₹${data.balance}`;
+                    display.innerHTML = `₹${data.balance}`;
                     display.style.display = 'block';
                     btn.style.display = 'none';
 
-                    // Real Party Popper
-                    const duration = 3 * 1000;
-                    const end = Date.now() + duration;
-
-                    (function frame() {
-                        confetti({
-                            particleCount: 7,
-                            angle: 60,
-                            spread: 55,
-                            origin: { x: 0 },
-                            colors: ['#3b82f6', '#10b981', '#ffffff']
-                        });
-                        confetti({
-                            particleCount: 7,
-                            angle: 120,
-                            spread: 55,
-                            origin: { x: 1 },
-                            colors: ['#3b82f6', '#10b981', '#ffffff']
-                        });
-
-                        if (Date.now() < end) {
-                            requestAnimationFrame(frame);
-                        }
-                    }());
+                    // Party Popper
+                    confetti({
+                        particleCount: 150,
+                        spread: 70,
+                        origin: { y: 0.6 },
+                        colors: ['#3b82f6', '#10b981', '#ffffff']
+                    });
                 } else {
-                    alert('Session expired. Redirecting to login...');
                     window.location.href = '/login';
                 }
             } catch (err) {
                 console.error(err);
                 btn.disabled = false;
-                btn.textContent = 'Check Current Balance';
+                btn.textContent = 'Check Balance';
             }
         });
 

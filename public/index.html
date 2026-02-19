@@ -10,49 +10,38 @@
 </head>
 
 <body>
-    <div class="auth-wrapper">
-        <div class="auth-sidebar">
-            <div class="sidebar-content">
-                <h2>The future of<br>banking is here.</h2>
-                <p>Experience seamless, multi-currency transactions with the world's most elegant personal bank.</p>
-            </div>
-        </div>
-        <div class="auth-content">
-            <div class="glass-card">
-                <div class="brand">Kodbank</div>
-                <div class="subtitle">Join our exclusive community of customers.</div>
+    <div class="glass-card">
+        <div class="brand">Kodbank</div>
+        <div class="subtitle">Elevate your banking experience.</div>
 
-                <form id="register-form">
-                    <div class="form-group">
-                        <label>User ID</label>
-                        <input type="number" id="uid" placeholder="Leave empty for auto-gen">
-                    </div>
-                    <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" id="uname" required placeholder="John Doe">
-                    </div>
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" id="email" required placeholder="name@company.com">
-                    </div>
-                    <div class="form-group">
-                        <label>Security Password</label>
-                        <input type="password" id="password" required placeholder="••••••••">
-                    </div>
-                    <div class="form-group">
-                        <label>Phone Number</label>
-                        <input type="text" id="phone" required placeholder="+91 XXXX XXXX XX">
-                    </div>
-                    <div class="form-group" style="display: none;">
-                        <input type="hidden" id="role" value="Customer">
-                    </div>
-                    <button type="submit" class="btn-primary">Create Account</button>
-                    <div class="auth-footer">
-                        Already a member? <a href="/login">Log in here</a>
-                    </div>
-                </form>
+        <form id="register-form">
+            <div class="form-row" style="display: flex; gap: 0.75rem;">
+                <div class="form-group" style="flex: 0.4;">
+                    <label>UID (Optional)</label>
+                    <input type="number" id="uid">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>Full Name</label>
+                    <input type="text" id="uname" required>
+                </div>
             </div>
-        </div>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label>Security Password</label>
+                <input type="password" id="password" required>
+            </div>
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="text" id="phone" required>
+            </div>
+            <button type="submit" class="btn-primary">Create Account</button>
+            <div class="auth-footer">
+                Already a member? <a href="/login">Log in</a>
+            </div>
+        </form>
     </div>
 
     <script>

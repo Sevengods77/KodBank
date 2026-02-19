@@ -10,34 +10,24 @@
 </head>
 
 <body>
-    <div class="auth-wrapper">
-        <div class="auth-sidebar">
-            <div class="sidebar-content">
-                <h2>Welcome to<br>Kodbank.</h2>
-                <p>Login to manage your global assets and track your multi-currency transactions in real-time.</p>
-            </div>
-        </div>
-        <div class="auth-content">
-            <div class="glass-card">
-                <div class="brand">Kodbank</div>
-                <div class="subtitle">Secure login to your personal dashboard.</div>
+    <div class="glass-card">
+        <div class="brand">Kodbank</div>
+        <div class="subtitle">Secure login to your account.</div>
 
-                <form id="login-form">
-                    <div class="form-group">
-                        <label>Username</label>
-                        <input type="text" id="username" required placeholder="Your username">
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" id="password" required placeholder="••••••••">
-                    </div>
-                    <button type="submit" class="btn-primary">Sign In</button>
-                    <div class="auth-footer">
-                        New to Kodbank? <a href="/">Join Us</a>
-                    </div>
-                </form>
+        <form id="login-form">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="username" required placeholder="User name">
             </div>
-        </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" required placeholder="••••••••">
+            </div>
+            <button type="submit" class="btn-primary">Sign In</button>
+            <div class="auth-footer">
+                New here? <a href="/">Register</a>
+            </div>
+        </form>
     </div>
 
     <script>
@@ -57,7 +47,7 @@
             if (response.ok) {
                 window.location.href = '/dashboard';
             } else {
-                alert('Invalid credentials. Please try again.');
+                alert('Invalid credentials.');
             }
         });
     </script>
