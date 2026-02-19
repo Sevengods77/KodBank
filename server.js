@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static(__dirname));
+app.use(express.static(join(__dirname, 'public')));
 
 // Register User
 app.post('/api/register', async (req, res) => {
@@ -90,8 +90,10 @@ app.get('/api/balance', async (req, res) => {
 });
 
 // Serve frontend files
-app.get('/', (req, res) => res.sendFile(join(__dirname, 'index.html')));
-app.get('/login', (req, res) => res.sendFile(join(__dirname, 'login.html')));
-app.get('/dashboard', (req, res) => res.sendFile(join(__dirname, 'dashboard.html')));
+app.get('/', (req, res) => res.sendFile(join(__dirname, 'public', 'index.html')));
+app.get('/login', (req, res) => res.sendFile(join(__dirname, 'public', 'login.html')));
+app.get('/dashboard', (req, res) => res.sendFile(join(__dirname, 'public', 'dashboard.html')));
 
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+
+export default app;
