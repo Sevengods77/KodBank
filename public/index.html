@@ -10,38 +10,48 @@
 </head>
 
 <body>
-    <div class="glass-card">
-        <div class="brand">Kodbank</div>
-        <div class="subtitle">Elevate your banking experience.</div>
+    <div class="wide-card">
+        <div class="card-visual">
+            <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; line-height: 1.1;">
+                Secure.<br>Global.<br>Elegant.</h2>
+            <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">Join 1M+ users managing their wealth on the most
+                advanced banking platform.</p>
+        </div>
+        <div class="card-form">
+            <div class="brand" style="text-align: left; margin-bottom: 0.25rem;">Sign Up</div>
+            <div class="subtitle" style="text-align: left; margin-bottom: 2rem;">Create your secure account in seconds.
+            </div>
 
-        <form id="register-form">
-            <div class="form-row" style="display: flex; gap: 0.75rem;">
-                <div class="form-group" style="flex: 0.4;">
-                    <label>UID (Optional)</label>
-                    <input type="number" id="uid">
+            <form id="register-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>User ID</label>
+                        <input type="number" id="uid" placeholder="Optional">
+                    </div>
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="uname" required placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="email" required placeholder="name@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="text" id="phone" required placeholder="+91 XXXX">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Security Password</label>
+                        <input type="password" id="password" required placeholder="••••••••">
+                    </div>
                 </div>
-                <div class="form-group" style="flex: 1;">
-                    <label>Full Name</label>
-                    <input type="text" id="uname" required>
+
+                <button type="submit" class="btn-primary">Get Started</button>
+                <div class="auth-footer" style="text-align: left;">
+                    Already have an account? <a href="/login">Log in</a>
                 </div>
-            </div>
-            <div class="form-group">
-                <label>Email Address</label>
-                <input type="email" id="email" required>
-            </div>
-            <div class="form-group">
-                <label>Security Password</label>
-                <input type="password" id="password" required>
-            </div>
-            <div class="form-group">
-                <label>Phone Number</label>
-                <input type="text" id="phone" required>
-            </div>
-            <button type="submit" class="btn-primary">Create Account</button>
-            <div class="auth-footer">
-                Already a member? <a href="/login">Log in</a>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 
     <script>
