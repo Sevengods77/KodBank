@@ -4,25 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kodbank - Login</title>
+    <title>Kodbank - Welcome Back</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <div class="container">
-        <h1>Kodbank Login</h1>
-        <form id="login-form">
-            <div class="form-group">
-                <label>Username</label>
-                <input type="text" id="username" required>
+    <div class="auth-wrapper">
+        <div class="auth-sidebar">
+            <div class="sidebar-content">
+                <h2>Welcome to<br>Kodbank.</h2>
+                <p>Login to manage your global assets and track your multi-currency transactions in real-time.</p>
             </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" id="password" required>
+        </div>
+        <div class="auth-content">
+            <div class="glass-card">
+                <div class="brand">Kodbank</div>
+                <div class="subtitle">Secure login to your personal dashboard.</div>
+
+                <form id="login-form">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" id="username" required placeholder="Your username">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="password" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn-primary">Sign In</button>
+                    <div class="auth-footer">
+                        New to Kodbank? <a href="/">Join Us</a>
+                    </div>
+                </form>
             </div>
-            <button type="submit">Login</button>
-        </form>
-        <a href="/" class="link">Don't have an account? Register</a>
+        </div>
     </div>
 
     <script>
@@ -42,7 +57,7 @@
             if (response.ok) {
                 window.location.href = '/dashboard';
             } else {
-                alert('Invalid username or password.');
+                alert('Invalid credentials. Please try again.');
             }
         });
     </script>

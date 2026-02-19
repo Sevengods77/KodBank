@@ -6,47 +6,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kodbank - Dashboard</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        .dashboard-card {
-            text-align: center;
-        }
-
-        #logout-btn {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            margin-top: 2rem;
-        }
-
-        #logout-btn:hover {
-            background: rgba(239, 68, 68, 0.2);
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <div class="container dashboard-card">
-        <h1>User Dashboard</h1>
-        <p style="color: var(--text-muted); margin-bottom: 2rem;">Welcome back to Kodbank!</p>
+    <canvas id="confetti-canvas"></canvas>
 
-        <button id="check-balance-btn">Check Balance</button>
-        <div id="balance-display"></div>
+    <div class="dashboard-container">
+        <div class="dashboard-card shadow-2xl">
+            <div class="brand">Kodbank Dashboard</div>
+            <p class="subtitle">Access your account details and secure balance.</p>
 
-        <button id="logout-btn">Logout</button>
+            <button id="check-balance-btn" class="btn-primary btn-check">Check Current Balance</button>
+            <div id="balance-display" class="balance-box"></div>
+
+            <button id="logout-btn"
+                style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); margin-top: 1rem;">Sign
+                Out Securely</button>
+        </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
         document.getElementById('check-balance-btn').addEventListener('click', async () => {
-            const response = await fetch('/api/balance');
-            if (response.ok) {
-                const data = await response.json();
-                const display = document.getElementById('balance-display');
-                display.innerHTML = `Your balance is: ₹${data.balance}`;
-                display.style.display = 'block';
-                createConfetti();
-            } else {
-                alert('Session expired. Please login again.');
-                window.location.href = '/login';
+            const btn = document.getElementById('check-balance-btn');
+            btn.disabled = true;
+            btn.textContent = 'Verifying Account...';
+
+            try {
+                const response = await fetch('/api/balance');
+                if (response.ok) {
+                    const data = await response.json();
+                    const display = document.getElementById('balance-display');
+                    display.innerHTML = `Your Balance: ₹${data.balance}`;
+                    display.style.display = 'block';
+                    btn.style.display = 'none';
+
+                    // Real Party Popper
+                    const duration = 3 * 1000;
+                    const end = Date.now() + duration;
+
+                    (function frame() {
+                        confetti({
+                            particleCount: 7,
+                            angle: 60,
+                            spread: 55,
+                            origin: { x: 0 },
+                            colors: ['#3b82f6', '#10b981', '#ffffff']
+                        });
+                        confetti({
+                            particleCount: 7,
+                            angle: 120,
+                            spread: 55,
+                            origin: { x: 1 },
+                            colors: ['#3b82f6', '#10b981', '#ffffff']
+                        });
+
+                        if (Date.now() < end) {
+                            requestAnimationFrame(frame);
+                        }
+                    }());
+                } else {
+                    alert('Session expired. Redirecting to login...');
+                    window.location.href = '/login';
+                }
+            } catch (err) {
+                console.error(err);
+                btn.disabled = false;
+                btn.textContent = 'Check Current Balance';
             }
         });
 
@@ -54,23 +81,6 @@
             document.cookie = "auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
             window.location.href = '/login';
         });
-
-        function createConfetti() {
-            const colors = ['#6366f1', '#a855f7', '#ec4899', '#3b82f6', '#10b981'];
-            for (let i = 0; i < 100; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.width = Math.random() * 10 + 5 + 'px';
-                confetti.style.height = confetti.style.width;
-                confetti.style.borderRadius = '50%';
-                confetti.style.animation = `confetti ${Math.random() * 3 + 2}s linear forwards`;
-                document.body.appendChild(confetti);
-
-                setTimeout(() => confetti.remove(), 5000);
-            }
-        }
     </script>
 </body>
 
