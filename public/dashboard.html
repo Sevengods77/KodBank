@@ -4,60 +4,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kodbank - Dashboard</title>
+    <title>KodBank - Dashboard</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
-<body>
-    <div class="top-logo">KodBank</div>
+<body class="dashboard-page">
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <div class="logo-section">
+                <h1 class="logo">KodBank</h1>
+            </div>
+            <div class="header-actions">
+                <button id="kodask-btn" class="btn-kodask">
+                    <span class="ai-icon">✨</span> Kodask AI
+                </button>
+                <button id="logout-btn" class="btn-logout">Logout</button>
+            </div>
+        </div>
+    </header>
+
     <canvas id="confetti-canvas"></canvas>
 
-    <div class="glass-card" style="text-align: center;">
-        <div class="brand">Dashboard</div>
-        <p class="subtitle">Welcome to your secure financial HQ. Everything in one place.</p>
+    <main class="dashboard-main">
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <h2>Welcome back to your banking HQ</h2>
+            <p>Manage your accounts and finances in one secure place</p>
+        </section>
 
-        <button id="check-balance-btn" class="btn-primary">View Account Balance</button>
-        <div id="balance-display" class="balance-box"></div>
+        <!-- Account Balance Card -->
+        <section class="dashboard-grid">
+            <div class="balance-card">
+                <div class="card-header">
+                    <h3>Account Balance</h3>
+                    <span class="card-badge">Primary Account</span>
+                </div>
+                <div class="card-body">
+                    <button id="check-balance-btn" class="btn-reveal">Reveal Balance</button>
+                    <div id="balance-display" class="balance-amount" style="display: none;">
+                        <span class="currency">₹</span>
+                        <span class="amount" id="amount-text">0</span>
+                    </div>
+                </div>
+            </div>
 
-        <button id="logout-btn" class="btn-secondary">Terminate Session</button>
-    </div>
+            <!-- Quick Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon income">💰</div>
+                    <div class="stat-info">
+                        <p class="stat-label">Total Deposits</p>
+                        <p class="stat-value">500K+</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon transaction">📊</div>
+                    <div class="stat-info">
+                        <p class="stat-label">Transactions</p>
+                        <p class="stat-value">245</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon security">🔐</div>
+                    <div class="stat-info">
+                        <p class="stat-label">Security Status</p>
+                        <p class="stat-value">Secure</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon savings">🎯</div>
+                    <div class="stat-info">
+                        <p class="stat-label">Savings Goal</p>
+                        <p class="stat-value">75%</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="quick-actions">
+            <h3>Quick Actions</h3>
+            <div class="action-buttons">
+                <button class="action-btn">
+                    <span class="action-icon">⬆️</span>
+                    Send Money
+                </button>
+                <button class="action-btn">
+                    <span class="action-icon">⬇️</span>
+                    Request Money
+                </button>
+                <button class="action-btn">
+                    <span class="action-icon">💳</span>
+                    Cards
+                </button>
+                <button class="action-btn">
+                    <span class="action-icon">📱</span>
+                    Mobile Pay
+                </button>
+            </div>
+        </section>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
+        let balanceRevealed = false;
+
         document.getElementById('check-balance-btn').addEventListener('click', async () => {
             const btn = document.getElementById('check-balance-btn');
-            btn.disabled = true;
-            btn.textContent = 'Decrypting Data...';
+            const display = document.getElementById('balance-display');
+            const amountText = document.getElementById('amount-text');
 
-            try {
-                const response = await fetch('/api/balance');
-                if (response.ok) {
-                    const data = await response.json();
-                    const display = document.getElementById('balance-display');
-                    display.innerHTML = `₹${data.balance}`;
-                    display.style.display = 'block';
-                    btn.style.display = 'none';
+            if (!balanceRevealed) {
+                btn.disabled = true;
+                btn.textContent = 'Decrypting...';
 
-                    confetti({
-                        particleCount: 150,
-                        spread: 70,
-                        origin: { y: 0.6 },
-                        colors: ['#3b82f6', '#10b981', '#ffffff']
-                    });
-                } else {
-                    window.location.href = '/login';
+                try {
+                    const response = await fetch('/api/balance');
+                    if (response.ok) {
+                        const data = await response.json();
+                        amountText.textContent = data.balance;
+                        display.style.display = 'flex';
+                        btn.style.display = 'none';
+                        balanceRevealed = true;
+
+                        // calculate the center of the balance display to launch confetti there
+                        (function blastConfettiAtElement(el) {
+                            try {
+                                const rect = el.getBoundingClientRect();
+                                const x = (rect.left + rect.width / 2) / window.innerWidth;
+                                const y = (rect.top + rect.height / 2) / window.innerHeight;
+
+                                // two bursts for a nicer effect
+                                confetti({
+                                    particleCount: 120,
+                                    spread: 70,
+                                    origin: { x: x, y: Math.max(0.05, y - 0.05) },
+                                    colors: ['#0ea5e9', '#06b6d4', '#ffffff']
+                                });
+
+                                confetti({
+                                    particleCount: 80,
+                                    spread: 90,
+                                    origin: { x: Math.min(0.95, x + 0.05), y: Math.max(0.05, y) },
+                                    colors: ['#06b6d4', '#ffffff']
+                                });
+                            } catch (e) {
+                                // fallback to center
+                                confetti({ particleCount: 100, spread: 60, origin: { y: 0.5 } });
+                            }
+                        })(document.getElementById('balance-display'));
+                    } else {
+                        window.location.href = '/login';
+                    }
+                } catch (err) {
+                    console.error(err);
+                    btn.disabled = false;
+                    btn.textContent = 'Reveal Balance';
+                    alert('Failed to fetch balance. Please try again.');
                 }
-            } catch (err) {
-                console.error(err);
-                btn.disabled = false;
-                btn.textContent = 'View Account Balance';
             }
         });
 
         document.getElementById('logout-btn').addEventListener('click', () => {
-            document.cookie = "auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            window.location.href = '/login';
+            if (confirm('Are you sure you want to logout?')) {
+                document.cookie = "auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                window.location.href = '/login';
+            }
+        });
+
+        document.getElementById('kodask-btn').addEventListener('click', () => {
+            alert('Kodask AI feature coming soon! 🚀');
         });
     </script>
 </body>
