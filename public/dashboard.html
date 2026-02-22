@@ -107,6 +107,14 @@
         </section>
     </main>
 
+    <!-- Kodask AI Modal -->
+    <div id="kodask-modal" class="modal-overlay">
+        <div class="modal-container">
+            <button id="close-modal" class="modal-close">&times;</button>
+            <iframe src="/kodask/index.html" class="modal-iframe"></iframe>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
         let balanceRevealed = false;
@@ -175,7 +183,19 @@
         });
 
         document.getElementById('kodask-btn').addEventListener('click', () => {
-            alert('Kodask AI feature coming soon! 🚀');
+            document.getElementById('kodask-modal').style.display = 'flex';
+        });
+
+        document.getElementById('close-modal').addEventListener('click', () => {
+            document.getElementById('kodask-modal').style.display = 'none';
+        });
+
+        // Close on overlay click
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('kodask-modal');
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
         });
     </script>
 </body>

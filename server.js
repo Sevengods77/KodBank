@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { OpenAI } from 'openai';
 
 dotenv.config();
 
@@ -15,6 +16,17 @@ const __dirname = dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+let aiClient;
+function getAiClient() {
+    if (!aiClient) {
+        aiClient = new OpenAI({
+            baseURL: "https://router.huggingface.co/v1",
+            apiKey: process.env.HF_TOKEN,
+        });
+    }
+    return aiClient;
+}
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -88,6 +100,43 @@ app.get('/api/balance', async (req, res) => {
         res.status(401).json({ error: 'Invalid token' });
     }
 });
+
+// AI Chat Endpoint
+app.post('/api/chat', async (req, res) => {
+    console.log('Received AI chat request');
+    const { messages } = req.body;
+    console.log('Messages count:', messages ? messages.length : 'undefined');
+
+    if (!messages) {
+        return res.status(400).json({ error: 'Messages are required' });
+    }
+
+    const client = getAiClient();
+
+    try {
+        const completion = await client.chat.completions.create({
+            model: "Qwen/Qwen2.5-7B-Instruct:together",
+            messages: [
+                {
+                    role: "system",
+                    content: "You are Kodask AI, a premium banking assistant for Kodnest. You provide helpful, polite, and professional banking-related information. Your tone is sophisticated and trustworthy. Format your responses using markdown where appropriate."
+                },
+                ...messages
+            ],
+        });
+
+        console.log('AI responded successfully');
+        res.status(200).json({ message: completion.choices[0].message });
+    } catch (error) {
+        console.error('AI Route Error:', error.message);
+        if (error.response) {
+            console.error('AI Response Error:', error.response.data);
+        }
+        res.status(500).json({ error: 'Failed to fetch AI response', details: error.message });
+    }
+});
+
+app.get('/api/test', (req, res) => res.json({ status: 'ok', message: 'Server is reachable' }));
 
 // Serve frontend files
 app.get('/', (req, res) => res.sendFile(join(__dirname, 'public', 'index.html')));
